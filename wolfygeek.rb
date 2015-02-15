@@ -42,7 +42,7 @@ end
 
 
 # remove this to update the db
-no_update
+#no_update
 
 
 # remove this to get less output when running
