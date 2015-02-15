@@ -1,26 +1,29 @@
 #!/usr/bin/env ruby
 
-require 'rubygems'
-require 'curl'
-require 'chatterbot/dsl'
+LIBS = %w(rubygems htmlentities curl chatterbot/dsl)
+LIBS.each {|lib| require lib }
 
 
 HASHTAG     = '#WoutTales'
-WOUT_USER   = 'wout123456'
+WOUT_USER   = 'Wout123456'
+
+MSG_BASE    = "@#{WOUT_USER} #{HASHTAG} "
 
 MAX_QUOTE_ATTEMPTS  = 10
-MAX_QUOTE_LENGTH    = 140 - HASHTAG.length
+MAX_QUOTE_LENGTH    = 140 - MSG_BASE.length
 QUOTE_SOURCES       = %w(math prog_style).join '+'
 QUOTE_URL           = "http://www.iheartquotes.com/api/v1/random?source=#{QUOTE_SOURCES}"
 
 
 $curl = CURL.new
+$entities = HTMLEntities.new
 def get_quote
     result = ''
     attempts = 0
     loop do
         quote = $curl.get(QUOTE_URL).squeeze(" \n").split("\n")
         quote = quote.slice(0, quote.length - 1).join(' ')
+        quote = $entities.decode quote
 
         if quote.length <= MAX_QUOTE_LENGTH then
             result = quote
@@ -39,11 +42,11 @@ end
 
 
 # remove this to update the db
-#no_update
+no_update
 
 
 # remove this to get less output when running
-verbose
+#verbose
 
 
 # here's a list of users to ignore
@@ -54,15 +57,15 @@ verbose
 #exclude "hi", "spammer", "junk"
 
 
-loop do
+#loop do
     search "from:#{WOUT_USER} '[1]' -'[2]'" do |tweet|
     #search "from:wolfygeek" do |tweet|
         quote = get_quote
-        reply "#{HASHTAG} #{quote}", tweet
+        reply "#{MSG_BASE}#{quote}", tweet
     end
 
     update_config
 
-    sleep 120
-end
+#     sleep 120
+# end
 
