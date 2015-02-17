@@ -60,6 +60,7 @@ end
 #loop do
     search "from:#{WOUT_USER} '[1]' -'[2]'" do |tweet|
     #search "from:wolfygeek" do |tweet|
+        next if tweet.text.start_with? '[1]'
         quote = get_quote
         reply "#{MSG_BASE}#{quote}", tweet
     end
