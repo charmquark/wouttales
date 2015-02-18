@@ -19,8 +19,7 @@ $curl = CURL.new
 $entities = HTMLEntities.new
 def get_quote
     result = ''
-    attempts = 0
-    loop do
+    1.upto(MAX_QUOTE_ATTEMPTS) do
         quote = $curl.get(QUOTE_URL).squeeze(" \n").split("\n")
         quote = quote.slice(0, quote.length - 1).join(' ')
         quote = $entities.decode quote
@@ -29,11 +28,8 @@ def get_quote
             result = quote
             break
         end
-
-        attempts += 1
-        break if attempts >= MAX_QUOTE_ATTEMPTS
     end
-    return result
+    result
 end
 
 
@@ -59,7 +55,6 @@ end
 
 #loop do
     search "from:#{WOUT_USER} '[1]'" do |tweet|
-    #search "from:wolfygeek" do |tweet|
         next if tweet.text.start_with? '[1]'
         next unless tweet.text.include? '[1]'
         #puts "<< #{tweet.text} >>"
@@ -69,6 +64,6 @@ end
 
     update_config
 
-#     sleep 120
+#     sleep 300
 # end
 
