@@ -4,6 +4,16 @@ LIBS = %w(rubygems htmlentities curl chatterbot/dsl)
 LIBS.each {|lib| require lib }
 
 
+# remove this to send out tweets
+#debug_mode
+
+# remove this to update the db
+#no_update
+
+# remove this to get less output when running
+#verbose
+
+
 HASHTAG     = '#WoutTales'
 WOUT_USER   = 'Wout123456'
 
@@ -33,33 +43,13 @@ def get_quote
 end
 
 
-# remove this to send out tweets
-#debug_mode
-
-
-# remove this to update the db
-#no_update
-
-
-# remove this to get less output when running
-#verbose
-
-
-# here's a list of users to ignore
-#blacklist "abc", "def"
-
-
-# here's a list of things to exclude from searches
-#exclude "hi", "spammer", "junk"
-
-
 #loop do
     search "from:#{WOUT_USER} '[1]'" do |tweet|
         next if tweet.text.start_with? '[1]'
         next unless tweet.text.include? '[1]'
+
         #puts "<< #{tweet.text} >>"
-        quote = get_quote
-        reply "#{MSG_BASE}#{quote}", tweet
+        reply "#{MSG_BASE}#{get_quote}", tweet
     end
 
     update_config
