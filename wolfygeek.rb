@@ -45,7 +45,8 @@ end
 
 #loop do
     search "from:#{WOUT_USER} '[1]'" do |tweet|
-        next if tweet.text.start_with? '[1]'
+        #next if tweet.text.start_with? '[1]'
+        next unless tweet.text.index(/^\s*(?:@[a-zA-Z0-9_]+\s*)*\s*[1]/).nil?
         next unless tweet.text.include? '[1]'
 
         #puts "<< #{tweet.text} >>"
