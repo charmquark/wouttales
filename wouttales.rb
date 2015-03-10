@@ -11,7 +11,7 @@ LIBS.each {|lib| require lib }
 #no_update
 
 # remove this to get less output when running
-#verbose
+verbose
 
 
 HASHTAG     = '#WoutTales'
@@ -49,10 +49,12 @@ end
         #next unless tweet.text.index(/^\s*(?:@[a-zA-Z0-9_]+\s*)*\s*\[1\]/).nil?
         #next unless tweet.text.include? '[1]'
         #next if tweet.text.index(/\[1\]$/).nil?
+
+        puts "RECV: #{tweet.text}"
         next unless tweet.text.end_with? '[1]'
 
-        puts "<< #{tweet.text} >>"
-        reply "@#{WOUT_USER} #{get_quote} #{HASHTAG}"
+        puts "REPLY"
+        reply "@#{WOUT_USER} #{get_quote} #{HASHTAG}", tweet
         #reply "#{MSG_BASE}#{get_quote}", tweet
     end
 
