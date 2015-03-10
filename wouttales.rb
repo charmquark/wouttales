@@ -51,7 +51,8 @@ end
         next if tweet.text.index(/\[1\]$/).nil?
 
         puts "<< #{tweet.text} >>"
-        reply "#{MSG_BASE}#{get_quote}", tweet
+        reply "@#{WOUT_USER} #{get_quote} #{HASHTAG}"
+        #reply "#{MSG_BASE}#{get_quote}", tweet
     end
 
     update_config
